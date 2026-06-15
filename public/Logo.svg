@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <linearGradient id="centerGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#6366F1" />
+      <stop offset="100%" stop-color="#3730A3" />
+    </linearGradient>
+
+    <linearGradient id="leftGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#A855F7" />
+      <stop offset="100%" stop-color="#6B21A8" />
+    </linearGradient>
+
+    <linearGradient id="rightGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#3B82F6" />
+      <stop offset="100%" stop-color="#1D4ED8" />
+    </linearGradient>
+
+    <linearGradient id="armGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#A855F7" />
+      <stop offset="50%" stop-color="#6366F1" />
+      <stop offset="100%" stop-color="#3B82F6" />
+    </linearGradient>
+  </defs>
+
+  <rect x="25" y="25" width="450" height="450" rx="100" fill="#F8FAFF" />
+
+  <g transform="rotate(22, 135, 230)">
+    <circle cx="135" cy="180" r="35" fill="url(#leftGrad)" />
+    <rect x="90" y="225" width="90" height="150" rx="45" fill="url(#leftGrad)" />
+  </g>
+
+  <g transform="rotate(-22, 365, 230)">
+    <circle cx="365" cy="180" r="35" fill="url(#rightGrad)" />
+    <rect x="320" y="225" width="90" height="150" rx="45" fill="url(#rightGrad)" />
+  </g>
+
+  <g>
+    <circle cx="250" cy="140" r="45" fill="url(#centerGrad)" stroke="#F8FAFF" stroke-width="8" />
+    <rect x="175" y="195" width="150" height="190" rx="75" fill="url(#centerGrad)" stroke="#F8FAFF" stroke-width="8" />
+  </g>
+
+  <g>
+    <path d="M 85 320 Q 250 450 415 320" fill="none" stroke="#F8FAFF" stroke-width="46" stroke-linecap="round" />
+    <path d="M 85 320 Q 250 450 415 320" fill="none" stroke="url(#armGrad)" stroke-width="32" stroke-linecap="round" />
+  </g>
+
+</svg>

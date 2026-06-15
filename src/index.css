@@ -1,0 +1,59 @@
+@import "tailwindcss";
+
+/* ===== 揪是要聚 全域樣式（已移除 Vite 範本樣式，避免干擾與多餘載入） ===== */
+
+:root {
+  font-family: 'Noto Sans TC', system-ui, 'Segoe UI', Roboto, sans-serif;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color-scheme: light;  
+  position: relative;
+
+  /* ===== 主題色（淺色預設） ===== */
+  --page: #c8cfd9;    /* 最外層頁面底 */
+  --bg: #eef1f5;      /* App 內容底 */
+  --surface: #ffffff; /* 卡片 / 彈窗表面 */
+  --field: #f4f6f9;   /* 輸入框 / 次要按鈕底 */
+  --border: #eef1f5;  /* 邊框 / 分隔線 / 進度條軌道 */
+  --ink: #2b2f37;     /* 主要文字 */
+  --muted: #8b929b;   /* 次要文字 */
+  --soft: #dceafa;    /* 淡藍按鈕底 */
+}
+
+/* ===== 深色模式 ===== */
+.theme-dark {
+  color-scheme: dark;
+  --page: #0c111b;
+  --bg: #141a25;
+  --surface: #1d2531;
+  --field: #28323f;
+  --border: #2c3744;
+  --ink: #e8ecf2;
+  --muted: #9aa4b2;
+  --soft: #23344a;
+}
+/* Tailwind 的 bg-white 工具類別在深色模式改為表面色（半透明 bg-white/xx 不受影響） */
+.theme-dark .bg-white { background-color: var(--surface) !important; }
+
+body {
+  margin: 0;
+}
+
+#root {
+  width: 100%;
+  min-height: 100svh;
+}
+
+/* 動畫（原為 JS 動態插入，改為靜態 CSS 提升效能） */
+@keyframes pop {
+  from { opacity: 0; transform: translateY(14px) scale(0.98); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes rise {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* 隱藏捲軸（維持原設計） */
+*::-webkit-scrollbar { display: none; }
