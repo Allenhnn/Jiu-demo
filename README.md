@@ -1,16 +1,129 @@
-# React + Vite
+# 揪是要聚｜揪團揪咖平台
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+一個以 React + Vite 打造的「揪團／揪咖」社群平台前端 Demo。使用者可以發起活動、報名參加、用聊天室即時溝通、活動結束後互相評分，並透過信譽積分機制維持社群品質。內建管理後台、深色模式、活動轉盤等功能。
 
-Currently, two official plugins are available:
+> 系統分析 (SA) 課程作品。資料以瀏覽器 `localStorage` 持久化，**僅本地端展示使用**。
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+---
 
-## React Compiler
+##  功能總覽
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### 活動
+- **發起活動**：選類別、活動名稱、起訖時間（自訂時間選擇器）、地點（Google Maps／內建備援）、人數、給參與者的話。
+- **發起前須完成手機認證**：未認證會跳出提示引導先認證。
+- **兩層分類篩選**：第一層大分類（運動／桌遊電玩／影音娛樂／飯局），第二層子類別。
+- **首頁分區**：自動分成「我發起的活動」與「可參與的活動」。
+- **活動轉盤**：從可參加的活動中隨機抽一個，跳出詢問是否參加。
+- **報名審核**：開團者可逐一同意／拒絕或一鍵全部通過。
 
-## Expanding the ESLint configuration
+### 我的活動（管理）
+- 分類：發起活動／審核中／已成功參與／**評分完畢**。
+- 點擊任一卡片開啟**活動管理彈窗**：瀏覽待審名單與成員、進行審核、進聊天室、結束活動或評分。
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+### 聊天室（社群系統）
+- 每個活動一間聊天室，**僅開團者與已加入者**可進入。
+- 自己訊息靠右藍色氣泡、他人靠左附頭像暱稱、開團者有標籤。
+- 審核通過時自動發出系統訊息；右側成員資訊側欄可查看成員與歷史紀錄。
+
+### 結束活動與互評信譽
+- 開團者可自由決定結束時間，按下「結束活動」進入互評階段。
+- 成員互相給 1～5 顆星評分（4～5 星不影響數值、3 星中立、1～2 星累積對方扣分進度條）。
+- **信譽積分規則**：每人初始 100 分；扣分進度條與信譽積分為兩個獨立數值。
+  - 權重 = 100 ÷ 活動參與人數
+  - 1 顆星：進度條 +2×權重；2 顆星：+1×權重
+  - 進度條每滿 100 → 扣 10 點信譽積分並歸零（保留溢出量）
+
+### 個人與認證
+- **編輯個人資料**：更新暱稱、自我介紹、上傳／更換頭像（自動壓縮至 256px）。
+- **手機號碼本人認證**：示範模式直接顯示驗證碼，認證後顯示綠色徽章。
+- **我的戰績**：完成場次、開團場次、平均評分、五星好評、評分分佈、活動類別佔比（前 N 名）、評分趨勢。
+- **歷史紀錄**：個人設定內可瀏覽，並可開啟「全部歷史紀錄」彈窗。
+
+### 介面
+- **深色模式**：個人設定內一鍵切換，以 CSS 變數全站套用，狀態以 localStorage 記憶。
+- **手機版 / 電腦版**：可切換預覽；版面 RWD。
+- **圖示**：介面裝飾統一使用 lucide 圖示（活動類別保留 emoji 以維持辨識度）。
+
+### 管理後台（admin / admin123）
+- 總覽：統計卡、活動類別分佈、報名審核狀態圖表。
+- 使用者管理：帳號、Email、信譽、扣分進度、電話與認證狀態、開團／參加數、停權／復權、搜尋。
+- 活動管理：含報名數與狀態。一鍵還原種子資料。
+
+---
+
+##  技術棧
+
+- **React 19** + **Vite**（rolldown 版）
+- **Tailwind CSS v4**（`@tailwindcss/vite`）
+- **lucide-react**（圖示）
+- **Recharts**（統計圖表）
+- 資料層：自建 `DB` 物件 + `localStorage`（含版本遷移，目前 `DB_VERSION = 5`）
+- 登入：本地帳密 / Google 登入（示範模式）
+- 地圖：Google Maps Places（未設金鑰時自動使用內建地點）
+
+---
+
+## 專案結構
+
+```
+src/
+├─ main.jsx                 進入點
+├─ MainFrame.jsx            主應用程式 App（畫面組裝與狀態管理）
+├─ constants.js            品牌色、分類資料、地點備援、評價標籤等常數
+├─ utils.js                jwtDecode、today 等工具
+├─ db.js                   資料庫層（seedDB + DB，localStorage 持久化與遷移）
+├─ index.css               全域樣式、主題 CSS 變數、深色模式
+└─ components/
+   ├─ common.jsx           共用小元件：Overlay / Chip / Field / StarRow / HistoryList / Avatar / GoogleIcon
+   ├─ ActivityCard.jsx     活動卡片
+   ├─ ChatRoom.jsx         活動聊天室
+   ├─ ManageActivityModal.jsx  活動管理彈窗
+   ├─ PeerRateModal.jsx    成員互評
+   ├─ ProfileEditModal.jsx 編輯個人資料
+   ├─ PhoneVerifyModal.jsx 手機認證
+   ├─ RouletteModal.jsx    活動轉盤
+   ├─ TimePicker.jsx       自訂時間選擇器
+   ├─ LocationPicker.jsx   地點選擇器
+   └─ AdminPanel.jsx       管理後台
+```
+
+---
+
+## 開始使用
+
+```bash
+npm install      # 安裝相依套件
+npm run dev      # 本機開發（HMR）
+npm run build    # 產生正式版 dist/
+npm run preview  # 預覽正式版
+npm run lint     # ESLint 檢查
+```
+
+開啟瀏覽器到終端機顯示的網址（預設 http://localhost:5173 ）。
+
+### （選用）啟用真實 Google 服務
+在 `src/constants.js` 填入：
+- `GOOGLE_MAPS_API_KEY`：啟用真實地圖／地點搜尋。
+- `GOOGLE_CLIENT_ID`：啟用真實 Google 登入。
+未填時自動使用內建備援與示範模式。
+
+---
+
+## 部署
+
+純前端靜態網站，適合部署到 Vercel／Netlify／Cloudflare Pages 等。框架會被自動偵測為 **Vite**，建置指令 `npm run build`，輸出目錄 `dist`。
+
+Vercel（CLI）：
+```bash
+npx vercel --prod        # 依提示登入並設定（專案名稱需全小寫）
+```
+
+或將專案推上 GitHub，於 Vercel／Netlify「Import Git Repository」連接後即可自動部署。
+
+---
+
+## 注意事項
+
+- 資料儲存在瀏覽器 `localStorage`，**每位訪客／每個裝置看到的是各自的獨立資料**，不會互通；清除瀏覽器資料會還原。適合作為 Demo 與作品展示。
+- 若要做成多人真正共用的線上服務，需再接後端資料庫（如 Supabase）。
+- 管理後台可見密碼為**課程示範用明碼**；實務上密碼應以雜湊（如 bcrypt）儲存，任何人都不應讀取明碼。
